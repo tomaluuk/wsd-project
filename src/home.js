@@ -9,7 +9,7 @@ class Home extends Component {
     constructor(props) {
         super(props);
         this.refreshPage = this.refreshPage.bind(this);
-        this.state = { show: false, new_item: '', user: 'testUser' };
+        this.state = { show: false, new_item: '', user: '' };
         this.refreshPageAndGoToLogin = this.refreshPageAndGoToLogin.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -48,10 +48,24 @@ class Home extends Component {
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
     }
+    
+    /*
+    getId() {
+        axios.get('/currentUser') {headers: {
+            Authorization: "Bearer " + Auth.getToken()
+         }}).then((response) => {
+            return response;
+            //console.log("Current user id: ", response.data);
+            //this.forceUpdate();
+            //return Auth.getUserId();
+        });
+    }
+    */
 
     handleSubmit(event) {
         event.preventDefault();
-        //this.setState({user : Auth.getUserId()}); 
+        console.log('auth.getuserid: ' + Auth.getUserId());
+        this.setState({user : Auth.getUserId()}); 
         const {new_item, user} = this.state;
         console.log(new_item, user);
         if (new_item === ''){
@@ -60,7 +74,7 @@ class Home extends Component {
 
         axios.post('/addItem',{new_item, user}).then((response) => {
             console.log("Result: ", response.data);
-            this.props.refreshPage();
+            document.location.reload(true); 
         },
         (error)=>{
             console.log(error);
@@ -68,15 +82,7 @@ class Home extends Component {
         });
     }
 
-    /*
-    getId() {
-        axios.post('/getId',{}).then((response) => {
-            console.log("Current user id: ", response.data);
-            //this.forceUpdate();
-            return Auth.getUserId();
-        });
-    }
-    */
+
 
     componentDidMount(){
         console.log('Mount homepage')

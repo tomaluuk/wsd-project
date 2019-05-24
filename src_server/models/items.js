@@ -7,7 +7,6 @@ module.exports = (sequelize, Sequelize) => {
         },
         dibs_user_id: {
             type: Sequelize.STRING,
-            allowNull: false,
         }
     });
 

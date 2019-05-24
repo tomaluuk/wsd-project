@@ -3,7 +3,7 @@ module.exports = function (app){
 var express = require('express');
 var router =  express.Router();
 var passport = require('passport');
-var currentUser;
+var currentUser = "";
 //const bcrypt = require('bcrypt');
 const{ Users, Lists, Items, Subscriptions} = require('../db');
 
@@ -26,8 +26,7 @@ jwtOptions.algorithm = 'RS256';
 let strategy = new JwtStrategy(jwtOptions, function (jwt_payload, next) {
 
     console.log('Payload received', jwt_payload);
-    let user = getUser({ user_id: jwt_payload.id });
-    setCurrentUser(jwt_payload.id);
+    let user = getUser({ user_id: jwt_payload.id }); 
     if (user) {
         next(null, user);
     } else {
@@ -85,11 +84,11 @@ const getAllItems = async () => {
 };
     
 function setCurrentUser(usr) {
-    this.currentUser = usr;
+    currentUser = usr;
 }
 
 function getCurrentUser() {
-    return this.currentUser;
+    return currentUser;
 }
 
 router.get('/', function(req, res) {    
@@ -102,8 +101,8 @@ router.post('/addItem', function (req, res) {
     var item_id = new_item;
     var dibs_user_id = user; //  Token Payload {id: käyttäjänimi!!!}
     //var list_id = 'juhannusmökä';
-    createItem({ item_id, dibs_user_id }).then(user =>
-        res.json({ msg: 'Item created successfully' })
+    createItem({ item_id, dibs_user_id }).then(item =>
+        res.json({ item, msg: 'Item created successfully' })
     );
 });
 
@@ -120,7 +119,7 @@ router.post('/addlist', function (req, res) {
 router.post('/dibs', function(req, res) {
     const {item_id} = req.body
     //var id = 'juhannusmökä';
-    var dibs_user_id = 'testUser';
+    //var dibs_user_id = 'testUser';
 
     createItem({ item_id, dibs_user_id }).then(dibs =>
         res.json({ dibs, msg: 'Item added succesfully'})    
@@ -209,18 +208,20 @@ router.post('/addItem', passport.authenticate('jwt',{session:false}), function(r
     );
 });
 
-router.post('/getId', passport.authenticate('jwt', {session:false}), function(req, res) {
-    getCurrentUser().then(usr => res.json(usr));
-    /*
+router.get('/currentUser', passport.authenticate('jwt', {session:false}), function(req, res) {
+    //getCurrentUser().then(usr => res.json(usr));
+    
     //let usr = strategy.ExtractJwt
     let token = req.headers.authorization.split(' ')[1];
-    console.log('token:[',token,']');
-  
+    setCurrentUser(token);
+    console.log('current user token:[',token,']');
+    res.json({token});
+    /*
     jwt.verify(token,jwtOptions.secretOrKey,function(err,decode){
         console.log(decode);
         res.json({decode});
-  })
-  */
+    })
+    */
 });
 
 router.post('/test', passport.authenticate('jwt',{session:false}), function(req, res) {     

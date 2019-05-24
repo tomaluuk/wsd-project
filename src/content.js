@@ -9,15 +9,27 @@ class Content extends Component {
         this.state = {
             // lists : [],
              items : [],
+
             };
         this.callDibs = this.callDibs.bind(this);
     }
 
     callDibs(event) {
-        
+        /*
+        this.setState({user : 'mäkikyy'})
+        axios.post('/dibs',{new_item, user}).then((response) => {
+            console.log("Result: ", response.data);
+            document.location.reload(true); 
+        },
+        (error)=>{
+            console.log(error);
+            document.location.reload(true);  
+        });
+        */
     }
 
     componentWillMount() {
+        console.log("getting items")
         axios.get('/items',{headers: {
             Authorization: "Bearer " + Auth.getToken()
          }}).then((response) => {
@@ -34,7 +46,8 @@ class Content extends Component {
             return (
                 <tr>
                     <td>{item.item_id}</td>
-                    <td><button value="Call dibs" onClick={this.callDibs} /></td>
+                    <td><button name='dibs' onClick={this.callDibs} >Call dibs</button></td>
+                    <td>{item.dibs_user_id}</td>
                 </tr>
             )
         });

@@ -5,12 +5,6 @@ module.exports = (sequelize,Sequelize) =>{
             allowNull: false,
             primaryKey: true
         },
-        createdAt: {
-            type: Sequelize.BOOLEAN,
-        },
-        updatedAt: {
-            type: Sequelize.BOOLEAN
-        }
     
     });
     /*
