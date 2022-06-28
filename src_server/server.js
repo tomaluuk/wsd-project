@@ -1,8 +1,10 @@
 //requiring neessary npm middleware packages
-var express = require("express");
-var session = require("express-session");
-const Sequelize = require("sequelize");
-var passport = require("passport");
+import express, { urlencoded, json } from "express";
+import session from "express-session";
+import Sequelize from "sequelize";
+import passport from "passport";
+import routes from "./router/api.js";
+//import passport, { initialize, session as pp_session } from "passport";
 
 //Setting up port
 var PORT = process.env.PORT || 8800;
@@ -29,7 +31,6 @@ app.get("/", function (req, res) {
 });
 
 // API routes
-var routes = require("./router/api")(app);
 app.use("/", routes);
 
 // This will listen to and show all activities on our terminal to
