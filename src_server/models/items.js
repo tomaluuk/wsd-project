@@ -1,5 +1,5 @@
 export default (sequelize, Sequelize) => {
-  const ItemsInLists = sequelize.define("items_in_lists", {
+  const Items = sequelize.define("items", {
     item_id: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -11,9 +11,9 @@ export default (sequelize, Sequelize) => {
   });
 
   /*
-    ItemsInLists.sync()
-    .then(() => console.log('ItemsInLists table created successfully'))
-    .catch(err => console.log('Error while syncing ItemsInLists table: ' + err));
+    Items.sync()
+    .then(() => console.log('Items table created successfully'))
+    .catch(err => console.log('Error while syncing Item table: ' + err));
     */
-  return ItemsInLists;
+  return Items;
 };
